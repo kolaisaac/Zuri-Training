@@ -1,16 +1,17 @@
-#import datetime 
+
 import datetime
 import random
+import string
 
 # User Database
-user_database = {
-    'Seyi': 'passwordSeyi',
-    'Mike': 'passwordMike',
-    'Love': 'passwordLove',
-    'Seun': 'passwordSeun',
-    'Bisi': 'passwordBisi',
-}
-
+# user_database = {
+#     'Seyi': 'passwordSeyi',
+#     'Mike': 'passwordMike',
+#     'Love': 'passwordLove',
+#     'Seun': 'passwordSeun',
+#     'Bisi': 'passwordBisi',
+# }
+user_database = {}
 # declaration of variables
 
 # now = datetime.datetime.now() 
@@ -20,7 +21,30 @@ user_database = {
 
 # Login Function
 
+def init():
+
+    isValidOptionSelected = False
+    print("Welcome to BLEST Bank")
+
+    while isValidOptionSelected == False:
+
+        haveAccount = int(input("Do you have account with us: 1 (Yes) 2 (No) \n"))
+
+
+        if(haveAccount == 1):
+            isValidOptionSelected = True
+            login()
+        elif(haveAccount == 2):
+            isValidOptionSelected = True
+            register()
+        else:
+            print("You have selected invalid option")
+
+    
+
 def login():
+ 
+    print("Login to your Account")
     now = datetime.datetime.now()
     name = input("What is your name? \n")
     password = input("Your password? \n")
@@ -32,6 +56,8 @@ def login():
         print ("Current date and time: %s" % now.strftime("%Y-%m-%d %H:%M:%S") )
     else:
         print('Password or Username Incorrect, Please try again!')
+
+    bankOperations()
 
 
 def bankOperations():
@@ -66,19 +92,30 @@ def bankOperations():
     else:
         print('Invalid Option Selected, please try again')
 
-print('Welcome, What would you like to do?')
-print('1. Login')
-print('2. Register')
+def generateAccountNumber():
 
-actionSelect = int(input('Select an option \n'))
+    print("Generating Account Number")
+    return(''.join(random.choices(string.digits, k=10)))
+#2print("Your Account Number is %s" % generateAccountNumber())
 
-if(actionSelect == 1):
-    isLoginSuccessful = False
+#  
+def register():
+    print("***** Register for a new Account *****")
+    email = input("What is your email address? \n")
+    first_name = input("What is your first name? \n")
+    last_name = input("What is your lastname? \n")
+    password = input("Type the password you want \n")
 
-    while isLoginSuccessful == False:
-        isLoginSuccessful = login()
+    accountNumber = generateAccountNumber()
 
-    bankOperations()
+    user_database[accountNumber] = [first_name, last_name, email, password]
 
-else:
-    print('Login failed, Username or Password incorrect. Please try again!')
+    print("Your Account has been created successfully")
+
+    login()
+
+
+init()
+
+
+
