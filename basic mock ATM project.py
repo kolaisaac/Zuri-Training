@@ -21,20 +21,20 @@ user_database = {
 # allowedUser = ['Seyi', 'Mike', 'Love']
 # allowedPassword = ['passwordSeyi', 'passwordMike', 'passwordLove']
 
-# Login Function
+# Initialization function
 
 def init():
 
     print("Welcome to BLEST Bank")
 
-    haveAccount = int(input("Do you have account with us: 1 (Yes) 2 (No) \n"))
+    have_account = int(input("Do you have account with us: 1 (Yes) 2 (No) \n"))
 
 
-    if haveAccount == 1:
+    if have_account == 1:
 
         login()
 
-    elif haveAccount == 2:
+    elif have_account == 2:
 
         register()
 
@@ -42,21 +42,52 @@ def init():
         print("You have selected invalid option")
         init()
 
-    
+# Login Function    
 
 def login():
  
     print("***** Login to your Account ******")
-    account_number_from_user = int(input("What is your Account Number? \n"))
-    password = input("Your password? \n")
-    for account_number, user_details in user_database.items():
-        if account_number == account_number_from_user:
-            if user_details[3] == password:
-                bank_operations(user_details)
-                
-    print('Password or Username Incorrect, Please try again!')
+    account_number_from_user = input("What is your Account Number? \n")
 
-    login()
+    valid_account_number = account_number_validation(account_number_from_user)
+
+    if valid_account_number:
+
+        password = input("Your password? \n")
+
+        for account_number, user_details in user_database.items():
+            if account_number == int(account_number_from_user):
+                if user_details[3] == password:
+                    bank_operations(user_details)
+                    
+        print('Password or Username Incorrect, Please try again!')
+
+        login()
+    else:
+        init()
+
+def account_number_validation(account_number):
+    # Chect if inputed account_number exit
+    if account_number:
+
+        if len(str(account_number)) == 10:
+
+            try:
+                int(account_number)
+                return True
+            except ValueError:
+                print("Invalid Account Number, Account number should be an integer")
+                return False
+            except TypeError:
+                print("Invalid account type")
+                return False
+
+        else:
+            print("Account Number cannot be less than or more than 10 digits")
+            return False
+    else:
+        print("Account number is a required field")
+        return False
 
 def register():
     print("***** Register for a new Account *****")
@@ -90,7 +121,7 @@ def bank_operations(user):
     # print('3. Complaint')
     # print('4. Logout')
 
-    selectedOption = int(input('Please select an option: (1) Deposit (2) Withdraw (3) Logout (4) Exit'))
+    selectedOption = int(input('Please select an option: (1) Deposit (2) Withdraw (3) Logout (4) Exit \n'))
 
     if selectedOption == 1:
         
